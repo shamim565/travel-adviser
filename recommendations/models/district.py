@@ -1,0 +1,32 @@
+from django.db import models
+from django.contrib import admin
+
+from .division import Division
+
+
+class District(models.Model):
+    division = models.ForeignKey(Division, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    bn_name = models.CharField(max_length=100)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+@admin.register(District)
+class DistrictAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "bn_name",
+        "division_id",
+        "latitude",
+        "longitude",
+        "created_at",
+        "updated_at",
+    )
+    search_fields = ("name", "bn_name")
+    list_filter = ("division_id",)
