@@ -10,6 +10,15 @@ class District(models.Model):
     bn_name = models.CharField(max_length=100)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    
+    # Weather & Air Quality (updated periodically)
+    avg_temp_2pm = models.FloatField(
+        null=True, blank=True, help_text="Avg temp at 2 PM over 7 days"
+    )
+    avg_pm2_5 = models.FloatField(
+        null=True, blank=True, help_text="Avg PM2.5 over 7 days"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
