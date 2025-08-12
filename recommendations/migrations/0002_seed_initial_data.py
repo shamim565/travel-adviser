@@ -19,7 +19,10 @@ def seed_data(apps, schema_editor):
 
     # Fetch and seed the District model
     try:
-        url = config("DISTRICTS_JSON_URL")
+        url = config(
+            "DISTRICTS_JSON_URL",
+            "https://raw.githubusercontent.com/strativ-dev/technical-screening-test/main/bd-districts.json",
+        )
         response = requests.get(url)
         response.raise_for_status()
         districts_data = response.json()["districts"]
