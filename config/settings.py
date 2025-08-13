@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_celery_results",
     "rest_framework",
+    "drf_spectacular",
     "recommendations",
 ]
 
@@ -126,6 +127,19 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/minute",
+        "user": "100/minute",
+        "low": "5/minute",
+    },
+}
+
 # CELERY SETTINGS
 CELERY_BROKER_URL = config("REDIS_URL", "redis://127.0.0.1:6379/0")
 CELERY_RESULT_BACKEND = "django-db"
@@ -134,3 +148,12 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+
+# DRF SPECTACULAR SETTINGS
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Travel Adviser",
+    "DESCRIPTION": None,
+    "VERSION": "0.1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
