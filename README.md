@@ -35,7 +35,7 @@ Please Follow these steps to set up the project:
    ```
 
 4. **Set Up Environment Variables**  
-   Create a `.env` file in the project root and add the necessary environment variables from `env.example`. Example:
+   Create a `.env` file in the project root and add the necessary environment variables from `env.example`.
 
 5. **Apply Migrations**
 
