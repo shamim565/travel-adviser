@@ -3,7 +3,12 @@ from celery import shared_task
 from celery_singleton import Singleton
 
 from .models import District
-from .utils import fetch_weather, fetch_air_quality
+from recommendations.services.open_meteo import (
+    fetch_weather,
+    fetch_air_quality,
+    weekly_avg_temperature_at_2pm,
+    weekly_avg_pm25,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -18,17 +23,18 @@ def update_district_weather_and_air_quality():
 
     Runs every 60 minutes via Celery Beat.
     """
-    logger.info(f"Starting weather and air quality update task.")
-
     districts = District.objects.all()
     updated_count = 0
 
     for district in districts:
         try:
-            temp = fetch_weather(district.latitude, district.longitude)
-            pm25 = fetch_air_quality(district.latitude, district.longitude)
+            weather_json = fetch_weather(district.latitude, district.longitude)
+            air_json = fetch_air_quality(district.latitude, district.longitude)
+
+            temp = weekly_avg_temperature_at_2pm(weather_json)  # float | None
+            pm25 = weekly_avg_pm25(air_json)  # float | None
         except Exception as e:
-            logger.warning(f"Failed to fetch for {district.name}: {e}")
+            logger.warning("Failed to fetch for %s: %s", district.name, e)
             continue
 
         if temp is not None and pm25 is not None:
