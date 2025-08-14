@@ -31,7 +31,7 @@ Please Follow these steps to set up the project:
 3. **Install Dependencies**
 
    ```bash
-   pip install -r requirements.txt
+   pipenv install
    ```
 
 4. **Set Up Environment Variables**  
